@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>BetterMe Quiz</title>
+
+  <style>
+    :root{
+      --bg:#F4EFE8;
+      --primary:#7A5C4D;
+      --accent:#D9C5A1;
+      --card:#FFFFFF;
+      --text:#2B2B2B;
+      --muted:#8A8A8A;
+      --success:#3FAF7A;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    #root{
+      max-width:480px;
+      margin:0 auto;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div id="root"></div>
+
+<script type="module" src="/src/main.tsx"></script>
+
+</body>
+</html>
