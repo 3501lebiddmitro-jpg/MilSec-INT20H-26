@@ -1,0 +1,192 @@
+.admin-layout {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+  background-color: #F9F7F5;
+  color: #5C5452;
+}
+
+.admin-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  background: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: 0 8px 30px rgba(74, 63, 60, 0.04);
+  margin-bottom: 24px;
+  border: 1px solid #F0EAE6;
+}
+
+.admin-eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9C8481;
+  margin-bottom: 6px;
+}
+
+.admin-title {
+  font-family: 'Georgia', serif;
+  font-size: 32px;
+  color: #4A3F3C;
+  margin: 0 0 8px 0;
+}
+
+.admin-subtitle { font-size: 15px; margin: 0; }
+.admin-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.admin-btn {
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.admin-btn.primary { background: #4A3F3C; color: #FFF; }
+.admin-btn.primary:hover { background: #3a312f; }
+.admin-btn.outline { background: transparent; border: 1px solid #D6C4B8; color: #4A3F3C; }
+.admin-btn.outline:hover { background: #F0EAE6; }
+.admin-btn.danger { background: #E63946; color: #FFF; }
+
+.admin-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
+  height: calc(100vh - 180px);
+  width: 100%;
+}
+
+.admin-card {
+  background: #FFFFFF;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(74, 63, 60, 0.04);
+  border: 1px solid #F0EAE6;
+}
+
+.canvas-card { padding: 0; overflow: hidden; position: relative; }
+
+.canvas-hint {
+  background: #FFFFFF;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4A3F3C;
+  border: 1px solid #D6C4B8;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin: 12px;
+}
+
+.admin-sidebar { display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+.sidebar-title { font-size: 18px; color: #4A3F3C; margin: 0 0 20px 0; font-family: 'Georgia', serif;}
+.editor-form { display: flex; flex-direction: column; gap: 16px; }
+.badge-row { display: flex; justify-content: space-between; align-items: center; }
+.admin-badge { padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+.node-badge { background: #F0EAE6; color: #4A3F3C; }
+.edge-badge { background: #EAE6F0; color: #3C3F4A; }
+.muted-id { font-family: monospace; font-size: 12px; color: #9C8481; }
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group span { font-size: 13px; font-weight: 600; color: #4A3F3C; }
+
+.admin-input {
+  width: 100%; padding: 12px 14px; border-radius: 12px;
+  border: 1px solid #D6C4B8; font-size: 14px; color: #5C5452; outline: none;
+}
+.admin-input:focus { border-color: #4A3F3C; }
+
+.empty-state { text-align: center; padding: 40px 20px; }
+.empty-icon { font-size: 32px; color: #D6C4B8; margin-bottom: 12px; }
+.json-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.text-btn { background: none; border: none; color: #9C8481; cursor: pointer; text-decoration: underline; font-size: 13px; }
+.json-preview { background: #F9F7F5; padding: 16px; border-radius: 12px; font-size: 12px; color: #5C5452; overflow-x: auto; border: 1px solid #EAEAEA; }
+
+/* Адаптивність */
+@media (max-width: 1024px) {
+  .admin-workspace { grid-template-columns: 1fr; height: auto; }
+  .canvas-card { height: 60vh; }
+}
+
+/* --- ДОДАТКОВІ СТИЛІ ДЛЯ SIMPLE ADMIN --- */
+
+.simple-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.simple-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.simple-panel {
+  padding: 24px;
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+
+.simple-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.simple-list-item {
+  width: 100%;
+  border: 1px solid #F0EAE6;
+  background: #FFFFFF;
+  border-radius: 14px;
+  padding: 14px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: all 0.2s ease;
+}
+
+.simple-list-item:hover {
+  background: #F9F7F5;
+  border-color: #D6C4B8;
+}
+
+.simple-list-item.active {
+  border-color: #4A3F3C;
+  background: rgba(156, 132, 129, 0.05);
+}
+
+.simple-list-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.simple-list-main strong {
+  font-size: 14px;
+  color: #4A3F3C;
+}
+
+/* Кольорові бейджі для типів у списку */
+.badge-question { background: #F9F7F5; color: #4A3F3C; border: 1px solid #D6C4B8; }
+.badge-info { background: #EAE6F0; color: #3C3F4A; border: 1px solid #D0C9E0; }
+.badge-offer { background: #4A3F3C; color: #FFFFFF; }
+
+/* Адаптив для Simple Admin */
+@media (max-width: 1024px) {
+  .simple-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .simple-grid { grid-template-columns: 1fr; }
+  .simple-panel { max-height: none; }
+}

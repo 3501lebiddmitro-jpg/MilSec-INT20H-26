@@ -1,37 +1,26 @@
 import { useEffect, useMemo, useState } from "react";
+import "../index.css";
 
-type PrimitiveValue = string | number | boolean;
-type AnswerValue = PrimitiveValue | PrimitiveValue[];
+type RewardMeta = {
+  reward?: string;
+};
 
-type RenderableOption = {
+type QuizOption = {
   id: string;
   labelUk: string;
-  value: PrimitiveValue;
+  value: string | number | boolean;
   order: number;
+  meta?: RewardMeta;
 };
 
-type QuestionNodePayload = {
+type QuizNode = {
   id: string;
-  type: "question";
-  key: string;
-  inputType: "single-select" | "multi-select" | "number" | "text";
+  type: "question" | "info";
+  key?: string;
   titleUk: string;
   subtitleUk?: string;
   descriptionUk?: string;
-  ui?: {
-    component?: "cards" | "chips" | "input" | "slider";
-    progressLabelUk?: string;
-    nextLabelUk?: string;
-  };
-  options: RenderableOption[];
-};
-
-type InfoNodePayload = {
-  id: string;
-  type: "info";
-  titleUk: string;
-  subtitleUk?: string;
-  descriptionUk?: string;
+  options?: QuizOption[];
   ui?: {
     component?: "cards" | "chips" | "input" | "slider";
     progressLabelUk?: string;
@@ -39,758 +28,666 @@ type InfoNodePayload = {
   };
 };
 
-type NodePayload = QuestionNodePayload | InfoNodePayload;
-
-type OfferResult = {
-  primaryOfferId: string;
-  secondaryOfferIds: string[];
-  explanationUk: string;
+type OfferCard = {
+  id: string;
+  code: string;
+  category?: "primary" | "addon" | "cross-sell";
+  nameUk: string;
+  descriptionUk: string;
   ctaUk: string;
 };
 
-type DashboardReveal = {
-  id: string;
-  type: "trait" | "score" | "summary" | "badge";
-  key: string;
-  titleUk: string;
-  value: PrimitiveValue | PrimitiveValue[];
-  unlockedAt: string;
+type FlowPayload = {
+  visitedNodeIds?: string[];
+  visitedQuestionNodeIds?: string[];
+  totalNodes?: number;
+  totalQuestionNodes?: number;
 };
 
-type Session = {
-  id: string;
-  journeyId: string;
-  status: "active" | "completed" | "abandoned";
-  answers: Record<string, AnswerValue>;
-  derived: Record<string, PrimitiveValue | PrimitiveValue[]>;
-  navigation: {
-    currentNodeId: string;
-    visitedNodeIds: string[];
-    history: Array<{
-      nodeId: string;
-      visitedAt: string;
-      answers: Record<string, AnswerValue>;
-      derived: Record<string, PrimitiveValue | PrimitiveValue[]>;
-    }>;
-  };
-  dashboard: {
-    reveals: DashboardReveal[];
-  };
-  result?: OfferResult;
-  createdAt: string;
-  updatedAt: string;
+type SessionStartResponse = {
+  session?: { id: string };
+  currentNode?: QuizNode;
+  flow?: FlowPayload;
+  mode?: "completed";
+  result?: { offers?: OfferCard[] };
 };
 
-type StartSessionResponse = {
-  session: Session;
-  currentNode: NodePayload;
-};
-
-type NextNodeResponse = {
-  session: Session;
-  mode: "next-node";
-  currentNode: NodePayload;
-};
-
-type CompletedResponse = {
-  session: Session;
-  mode: "completed";
-  result: OfferResult;
+type AnswerResponse = {
+  mode?: "next-node" | "completed";
+  currentNode?: QuizNode;
+  result?: { offers?: OfferCard[] };
+  flow?: FlowPayload;
 };
 
 type BackResponse = {
-  session: Session;
-  currentNode: NodePayload;
+  currentNode?: QuizNode;
+  flow?: FlowPayload;
 };
 
-const API_BASE = "http://localhost:3000/api";
-
-const pageStyle: Record<string, string | number> = {
-  minHeight: "100vh",
-  background:
-    "linear-gradient(180deg, #9A6E5B 0px, #9A6E5B 170px, #F4EFE8 170px, #F4EFE8 100%)",
-  color: "#2B2B2B"
+type RewardItem = {
+  id: string;
+  image: string;
+  popping?: boolean;
 };
 
-const shellStyle: Record<string, string | number> = {
-  maxWidth: "480px",
-  margin: "0 auto",
-  minHeight: "100vh",
-  display: "flex",
-  flexDirection: "column",
-  padding: "18px 16px 24px"
-};
-
-const headerStyle: Record<string, string | number> = {
-  color: "#FFFFFF",
-  paddingTop: "6px",
-  paddingBottom: "18px"
-};
-
-const titleStyle: Record<string, string | number> = {
-  fontSize: "28px",
-  fontWeight: 800,
-  lineHeight: 1.1,
-  marginBottom: "8px"
-};
-
-const subtitleStyle: Record<string, string | number> = {
-  fontSize: "14px",
-  lineHeight: 1.45,
-  color: "rgba(255,255,255,0.88)"
-};
-
-const medalsRowStyle: Record<string, string | number> = {
-  display: "flex",
-  gap: "8px",
-  marginTop: "14px",
-  flexWrap: "wrap"
-};
-
-const medalStyle: Record<string, string | number> = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: "6px",
-  borderRadius: "999px",
-  background: "rgba(255,255,255,0.16)",
-  color: "#FFFFFF",
-  padding: "8px 12px",
-  fontSize: "12px",
-  fontWeight: 700,
-  backdropFilter: "blur(4px)"
-};
-
-const contentStyle: Record<string, string | number> = {
-  display: "grid",
-  gap: "14px",
-  marginTop: "-12px"
-};
-
-const cardStyle: Record<string, string | number> = {
-  background: "#FFFFFF",
-  borderRadius: "24px",
-  boxShadow: "0 12px 30px rgba(85, 59, 43, 0.08)",
-  padding: "18px 16px"
-};
-
-const dashboardStyle: Record<string, string | number> = {
-  ...cardStyle,
-  padding: "14px"
-};
-
-const dashboardTitleStyle: Record<string, string | number> = {
-  fontSize: "13px",
-  fontWeight: 800,
-  color: "#7A5C4D",
-  letterSpacing: "0.02em",
-  marginBottom: "10px",
-  textTransform: "uppercase"
-};
-
-const revealListStyle: Record<string, string | number> = {
-  display: "grid",
-  gap: "8px"
-};
-
-const revealItemStyle: Record<string, string | number> = {
-  borderRadius: "16px",
-  background: "#F8F3ED",
-  padding: "10px 12px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "4px"
-};
-
-const revealLabelStyle: Record<string, string | number> = {
-  fontSize: "12px",
-  color: "#8A776C",
-  fontWeight: 700
-};
-
-const revealValueStyle: Record<string, string | number> = {
-  fontSize: "14px",
-  color: "#2B2B2B",
-  fontWeight: 800
-};
-
-const progressWrapStyle: Record<string, string | number> = {
-  display: "grid",
-  gap: "8px"
-};
-
-const progressMetaStyle: Record<string, string | number> = {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: "10px",
-  alignItems: "center"
-};
-
-const progressTextStyle: Record<string, string | number> = {
-  fontSize: "12px",
-  fontWeight: 800,
-  color: "#7A5C4D",
-  letterSpacing: "0.03em",
-  textTransform: "uppercase"
-};
-
-const progressTrackStyle: Record<string, string | number> = {
-  width: "100%",
-  height: "10px",
-  background: "#E8DED1",
-  borderRadius: "999px",
-  overflow: "hidden"
-};
-
-const questionCardStyle: Record<string, string | number> = {
-  ...cardStyle,
-  display: "grid",
-  gap: "16px"
-};
-
-const questionTitleStyle: Record<string, string | number> = {
-  fontSize: "26px",
-  lineHeight: 1.15,
-  fontWeight: 800
-};
-
-const questionSubtitleStyle: Record<string, string | number> = {
-  fontSize: "15px",
-  color: "#756B63",
-  lineHeight: 1.5
-};
-
-const optionsGridStyle: Record<string, string | number> = {
-  display: "grid",
-  gap: "10px"
-};
-
-const navRowStyle: Record<string, string | number> = {
-  display: "flex",
-  gap: "10px",
-  marginTop: "2px"
-};
-
-const buttonBaseStyle: Record<string, string | number> = {
-  border: "none",
-  borderRadius: "18px",
-  minHeight: "52px",
-  padding: "0 16px",
-  fontSize: "15px",
-  fontWeight: 800,
-  cursor: "pointer"
-};
-
-const primaryButtonStyle: Record<string, string | number> = {
-  ...buttonBaseStyle,
-  background: "#7A5C4D",
-  color: "#FFFFFF",
-  flex: 1
-};
-
-const secondaryButtonStyle: Record<string, string | number> = {
-  ...buttonBaseStyle,
-  background: "#EFE3D3",
-  color: "#6D564A",
-  minWidth: "104px"
-};
-
-const praiseStyle: Record<string, string | number> = {
-  borderRadius: "18px",
-  background: "linear-gradient(135deg, #F5E9B7 0%, #E7D197 100%)",
-  color: "#58462A",
-  padding: "14px 14px",
-  display: "grid",
-  gap: "5px"
-};
-
-const praiseTitleStyle: Record<string, string | number> = {
-  fontSize: "13px",
-  fontWeight: 900,
-  textTransform: "uppercase",
-  letterSpacing: "0.03em"
-};
-
-const praiseTextStyle: Record<string, string | number> = {
-  fontSize: "14px",
-  lineHeight: 1.5,
-  fontWeight: 700
-};
-
-const optionStyle = (selected: boolean): Record<string, string | number> => ({
-  border: selected ? "2px solid #7A5C4D" : "1px solid #E8DED1",
-  background: selected ? "#F5EEE6" : "#FFFFFF",
-  color: "#2B2B2B",
-  borderRadius: "18px",
-  padding: "16px 14px",
-  minHeight: "58px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  gap: "10px",
-  cursor: "pointer",
-  fontSize: "15px",
-  fontWeight: 700
-});
-
-const resultCardStyle: Record<string, string | number> = {
-  ...cardStyle,
-  display: "grid",
-  gap: "14px"
-};
-
-const resultBadgeStyle: Record<string, string | number> = {
-  display: "inline-flex",
-  alignSelf: "flex-start",
-  background: "#EFE3D3",
-  color: "#7A5C4D",
-  borderRadius: "999px",
-  padding: "8px 12px",
-  fontSize: "12px",
-  fontWeight: 900,
-  textTransform: "uppercase",
-  letterSpacing: "0.03em"
-};
-
-function formatRevealValue(value: PrimitiveValue | PrimitiveValue[]): string {
-  if (Array.isArray(value)) {
-    return value.join(", ");
+const styles = {
+  container: {
+    padding: "24px",
+    maxWidth: "480px",
+    margin: "0 auto"
+  },
+  hero: {
+    padding: "20px 0 24px 0",
+    textAlign: "center" as const
+  },
+  heroTitle: {
+    fontSize: "34px",
+    fontWeight: 700,
+    color: "#4A3F3C",
+    fontFamily: "Georgia, serif",
+    lineHeight: "1.1",
+    letterSpacing: "-0.02em",
+    marginBottom: "16px"
+  },
+  heroText: {
+    fontSize: "16px",
+    color: "#5C5452",
+    opacity: 0.8,
+    lineHeight: "1.4"
+  },
+  dashboard: {
+    background: "#FFFFFF",
+    borderRadius: "20px",
+    padding: "24px",
+    boxShadow: "0 8px 24px rgba(74, 63, 60, 0.05)",
+    marginBottom: "24px"
+  },
+  progressInfo: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "12px",
+    fontSize: "13px",
+    fontWeight: 700,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.05em",
+    color: "#4A3F3C"
+  },
+  progressTrack: {
+    height: "8px",
+    background: "#F0EAE6",
+    borderRadius: "10px",
+    overflow: "hidden",
+    marginBottom: "16px"
+  },
+  card: {
+    background: "#FFFFFF",
+    borderRadius: "24px",
+    padding: "28px",
+    boxShadow: "0 4px 20px rgba(0,0,0,0.02)"
+  },
+  questionTitle: {
+    fontSize: "26px",
+    fontWeight: 700,
+    fontFamily: "Georgia, serif",
+    lineHeight: "1.2",
+    color: "#4A3F3C",
+    margin: 0
+  },
+  optionsGrid: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "12px"
+  },
+  navRow: {
+    marginTop: "32px",
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "12px"
+  },
+  primaryButton: {
+    backgroundColor: "#4A3F3C",
+    color: "#FFF",
+    border: "none",
+    borderRadius: "30px",
+    padding: "20px",
+    fontSize: "17px",
+    fontWeight: 600,
+    cursor: "pointer",
+    transition: "opacity 0.2s"
+  },
+  secondaryButton: {
+    background: "transparent",
+    border: "none",
+    color: "#9C8481",
+    fontSize: "15px",
+    fontWeight: 500,
+    textDecoration: "underline",
+    cursor: "pointer",
+    padding: "10px"
   }
+};
 
-  const map: Record<string, string> = {
-    weight_loss: "Схуднення",
-    strength: "Сила",
-    flexibility: "Гнучкість",
-    endurance: "Витривалість",
-    home: "Вдома",
-    gym: "У залі",
-    outdoor: "Надворі",
-    "10_15": "10–15 хвилин",
-    "20_30": "20–30 хвилин",
-    "45_plus": "45+ хвилин",
-    low: "Низький",
-    medium: "Середній",
-    high: "Високий",
-    lack_of_time: "Нестача часу",
-    stress: "Стрес",
-    low_motivation: "Низька мотивація",
-    pain: "Дискомфорт або біль",
-    none: "Немає",
-    knee: "Коліна",
-    back: "Спина",
-    other: "Інше",
-    beginner: "Початковий",
-    intermediate: "Середній",
-    advanced: "Просунутий"
+function optionStyle(selected: boolean) {
+  return {
+    width: "100%",
+    padding: "18px 20px",
+    borderRadius: "16px",
+    border: selected ? "2px solid #4A3F3C" : "1px solid #EAEAEA",
+    background: selected ? "rgba(156, 132, 129, 0.04)" : "#FFF",
+    color: "#4A3F3C",
+    fontSize: "16px",
+    fontWeight: selected ? "600" : "400",
+    textAlign: "left" as const,
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    transition: "all 0.2s ease"
   };
-
-  if (typeof value === "string" && map[value]) {
-    return map[value];
-  }
-
-  return String(value);
 }
 
-function buildPraise(session: Session, node: NodePayload | null): string | null {
-  const answers = session.answers;
-
-  if (answers.barrier === "lack_of_time") {
-    return "Навіть при щільному графіку ви шукаєте можливість подбати про себе. Такий підхід уже виділяє вас серед більшості користувачів.";
-  }
-
-  if (answers.context === "home") {
-    return "Домашній формат обирають ті, хто реально вміє вбудовувати турботу про себе у повсякденне життя.";
-  }
-
-  if (answers.level === "advanced") {
-    return "Лише невелика частина користувачів приходить із таким рівнем підготовки. Це сильна база для швидкого прогресу.";
-  }
-
-  if (answers.goal === "endurance") {
-    return "Ціль на витривалість зазвичай обирають люди з високою внутрішньою дисципліною. Це дуже сильний сигнал.";
-  }
-
-  if (answers.stress === "low") {
-    return "Схоже, у вас уже є хороша база саморегуляції. Такі користувачі часто проходять програму стабільніше за інших.";
-  }
-
-  if (node?.type === "question" && node.key === "goal") {
-    return "Ми будемо не просто ставити питання, а поступово відкривати вашу персональну wellness-картину.";
-  }
-
-  return null;
+function buildPraise(node: QuizNode | null): string | null {
+  if (!node) return null;
+  if (node.key === "goal") return "Ми не просто поставимо кілька питань, а сформуємо персональний маршрут.";
+  if (node.key === "context") return "Місце тренування дуже важливе для підбору правильного інвентарю.";
+  if (node.key === "barrier") return "Бар'єри допомагають точніше підібрати програму, яку реально пройти до кінця.";
+  if (node.key === "stress") return "Рівень стресу впливає на темп, навантаження та формат рекомендації.";
+  if (node.type === "info") return "Ми вже готові показати персональний результат.";
+  return "Ця відповідь допоможе нам зробити план максимально точним.";
 }
 
-function buildMedals(session: Session): string[] {
-  const medals: string[] = [];
-
-  if (session.answers.goal) {
-    medals.push("🏅 Фокус на цілі");
-  }
-
-  if (session.answers.context) {
-    medals.push("⚽ Рух у своєму ритмі");
-  }
-
-  if (session.answers.barrier || session.answers.stress) {
-    medals.push("🥇 Чесність із собою");
-  }
-
-  return medals.slice(0, 3);
+function buildRewardListFromNode(node: QuizNode | null, selectedValue: unknown): RewardItem[] {
+  if (!node?.options || selectedValue === null || selectedValue === undefined) return [];
+  const selectedOption = node.options.find((option) => option.value === selectedValue);
+  const rewardImage = selectedOption?.meta?.reward;
+  if (!rewardImage) return [];
+  return [{ id: node.id, image: rewardImage }];
 }
 
-async function startSessionRequest(): Promise<StartSessionResponse> {
-  const response = await fetch(`${API_BASE}/session`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-
-  if (!response.ok) {
-    throw new Error("Не вдалося запустити квіз.");
-  }
-
-  return response.json() as Promise<StartSessionResponse>;
+function applyFlowState(
+  flow: FlowPayload | undefined,
+  setVisitedNodeIds: (value: string[]) => void,
+  setVisitedQuestionNodeIds: (value: string[]) => void,
+  setTotalNodes: (value: number) => void,
+  setTotalQuestionNodes: (value: number) => void
+) {
+  setVisitedNodeIds(flow?.visitedNodeIds ?? []);
+  setVisitedQuestionNodeIds(flow?.visitedQuestionNodeIds ?? []);
+  setTotalNodes(flow?.totalNodes ?? 0);
+  setTotalQuestionNodes(flow?.totalQuestionNodes ?? 0);
 }
 
-async function submitAnswerRequest(
-  sessionId: string,
-  nodeId: string,
-  value: AnswerValue
-): Promise<NextNodeResponse | CompletedResponse> {
-  const response = await fetch(`${API_BASE}/session/${sessionId}/answer`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      nodeId,
-      value
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error("Не вдалося зберегти відповідь.");
-  }
-
-  return response.json() as Promise<NextNodeResponse | CompletedResponse>;
-}
-
-async function goBackRequest(sessionId: string): Promise<BackResponse> {
-  const response = await fetch(`${API_BASE}/session/${sessionId}/back`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
-
-  if (!response.ok) {
-    throw new Error("Не вдалося повернутися назад.");
-  }
-
-  return response.json() as Promise<BackResponse>;
-}
-
-export function QuizApp() {
-  const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
-  const [currentNode, setCurrentNode] = useState<NodePayload | null>(null);
-  const [result, setResult] = useState<OfferResult | null>(null);
-  const [selectedValue, setSelectedValue] = useState<AnswerValue | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    void (async () => {
-      try {
-        const data = await startSessionRequest();
-        setSession(data.session);
-        setCurrentNode(data.currentNode);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Помилка запуску.");
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (!session || !currentNode || currentNode.type !== "question") {
-      setSelectedValue(null);
-      return;
-    }
-
-    const savedValue = session.answers[currentNode.key];
-    setSelectedValue(savedValue ?? null);
-  }, [session, currentNode]);
-
-  const medals = useMemo(() => (session ? buildMedals(session) : []), [session]);
-  const praise = useMemo(() => (session && currentNode ? buildPraise(session, currentNode) : null), [session, currentNode]);
-
-  const progress = useMemo(() => {
-    if (!session) {
-      return 0;
-    }
-
-    const raw = session.dashboard.reveals.length;
-    return Math.min(100, Math.max(12, raw * 18));
-  }, [session]);
-
-  const handleContinueInfo = async () => {
-    if (!session || !currentNode || currentNode.type !== "info") {
-      return;
-    }
-
-    try {
-      setBusy(true);
-      const response = await submitAnswerRequest(session.id, currentNode.id, true);
-
-      if (response.mode === "completed") {
-        setSession(response.session);
-        setResult(response.result);
-        setCurrentNode(null);
-        return;
-      }
-
-      setSession(response.session);
-      setCurrentNode(response.currentNode);
-      setResult(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Сталася помилка.");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleSubmitQuestion = async () => {
-    if (!session || !currentNode || currentNode.type !== "question" || selectedValue === null) {
-      return;
-    }
-
-    try {
-      setBusy(true);
-      const response = await submitAnswerRequest(session.id, currentNode.id, selectedValue);
-
-      if (response.mode === "completed") {
-        setSession(response.session);
-        setResult(response.result);
-        setCurrentNode(null);
-        return;
-      }
-
-      setSession(response.session);
-      setCurrentNode(response.currentNode);
-      setResult(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Не вдалося перейти далі.");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const handleBack = async () => {
-    if (!session) {
-      return;
-    }
-
-    try {
-      setBusy(true);
-      const response = await goBackRequest(session.id);
-      setSession(response.session);
-      setCurrentNode(response.currentNode);
-      setResult(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Не вдалося повернутися назад.");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div style={pageStyle}>
-        <div style={shellStyle}>
-          <div style={headerStyle}>
-            <div style={titleStyle}>Готуємо ваш шлях</div>
-            <div style={subtitleStyle}>Запускаємо персональний wellness-квіз…</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div style={pageStyle}>
-        <div style={shellStyle}>
-          <div style={headerStyle}>
-            <div style={titleStyle}>Щось пішло не так</div>
-            <div style={subtitleStyle}>{error}</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+const StarWithPopup = ({ text }: { text: string }) => {
+  const starImg = "https://img.icons8.com/emoji/48/sparkles.png";
 
   return (
-    <div style={pageStyle}>
-      <div style={shellStyle}>
-        <header style={headerStyle}>
-          <div style={titleStyle}>Ваш персональний план</div>
-          <div style={subtitleStyle}>
-            Кожна відповідь відкриває частину вашого wellness-профілю
-          </div>
-          {medals.length > 0 && (
-            <div style={medalsRowStyle}>
-              {medals.map((medal) => (
-                <div key={medal} style={medalStyle}>
-                  <span>{medal}</span>
-                </div>
-              ))}
-            </div>
-          )}
+    <div className="star-wrapper">
+      <img src={starImg} alt="star" className="star-icon" />
+      <div className="star-popup">{text}</div>
+    </div>
+  );
+};
+
+export function QuizApp() {
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [node, setNode] = useState<QuizNode | null>(null);
+  const [offers, setOffers] = useState<OfferCard[] | null>(null);
+  const [selectedValue, setSelectedValue] = useState<string | number | boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorText, setErrorText] = useState<string | null>(null);
+
+  const [rewards, setRewards] = useState<RewardItem[]>([]);
+  const [flyingImage, setFlyingImage] = useState<string | null>(null);
+
+  const [visitedNodeIds, setVisitedNodeIds] = useState<string[]>([]);
+  const [visitedQuestionNodeIds, setVisitedQuestionNodeIds] = useState<string[]>([]);
+  const [totalNodes, setTotalNodes] = useState(0);
+  const [totalQuestionNodes, setTotalQuestionNodes] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+
+    async function startSession() {
+      try {
+        setIsLoading(true);
+        setErrorText(null);
+
+        const response = await fetch("http://localhost:3000/api/session", {
+          method: "POST"
+        });
+
+        const data: SessionStartResponse = await response.json();
+
+        if (!active) return;
+
+        setSessionId(data.session?.id ?? null);
+        setNode(data.currentNode ?? null);
+        setOffers(data.mode === "completed" ? data.result?.offers ?? [] : null);
+
+        applyFlowState(
+          data.flow,
+          setVisitedNodeIds,
+          setVisitedQuestionNodeIds,
+          setTotalNodes,
+          setTotalQuestionNodes
+        );
+      } catch {
+        if (!active) return;
+        setErrorText("Не вдалося завантажити квіз.");
+      } finally {
+        if (!active) return;
+        setIsLoading(false);
+      }
+    }
+
+    startSession();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const progress = useMemo(() => {
+    if (totalQuestionNodes > 0) {
+      const raw = (visitedQuestionNodeIds.length / totalQuestionNodes) * 100;
+      return Math.max(0, Math.min(100, raw));
+    }
+
+    if (totalNodes > 0) {
+      const raw = (visitedNodeIds.length / totalNodes) * 100;
+      return Math.max(0, Math.min(100, raw));
+    }
+
+    return 0;
+  }, [totalNodes, totalQuestionNodes, visitedNodeIds, visitedQuestionNodeIds]);
+
+  const praise = useMemo(() => buildPraise(node), [node]);
+
+  async function handleNext() {
+    if (selectedValue === null || selectedValue === undefined || !sessionId || !node) return;
+
+    const rewardItems = buildRewardListFromNode(node, selectedValue);
+    const rewardImage = rewardItems[0]?.image;
+
+    if (rewardImage) {
+      setFlyingImage(rewardImage);
+    }
+
+    setIsLoading(true);
+    setErrorText(null);
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/session/${sessionId}/answer`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nodeId: node.id, value: selectedValue })
+      });
+
+      const data: AnswerResponse = await response.json();
+
+      if (rewardImage) {
+        setTimeout(() => {
+          setRewards((prev) => {
+            const filtered = prev.filter((reward) => reward.id !== node.id);
+            return [...filtered, ...rewardItems];
+          });
+          setFlyingImage(null);
+        }, 700);
+      }
+
+      const updateUi = () => {
+        applyFlowState(
+          data.flow,
+          setVisitedNodeIds,
+          setVisitedQuestionNodeIds,
+          setTotalNodes,
+          setTotalQuestionNodes
+        );
+
+        if (data.mode === "completed") {
+          setOffers(data.result?.offers ?? []);
+          setNode(null);
+          setSelectedValue(null);
+          setIsLoading(false);
+          return;
+        }
+
+        setNode(data.currentNode ?? null);
+        setSelectedValue(null);
+        setIsLoading(false);
+      };
+
+      if (rewardImage) {
+        setTimeout(updateUi, 800);
+      } else {
+        updateUi();
+      }
+    } catch {
+      setFlyingImage(null);
+      setIsLoading(false);
+      setErrorText("Не вдалося зберегти відповідь.");
+    }
+  }
+
+  async function handleContinueInfo() {
+    if (!sessionId || !node) return;
+
+    setIsLoading(true);
+    setErrorText(null);
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/session/${sessionId}/continue`, {
+        method: "POST"
+      });
+
+      const data: AnswerResponse = await response.json();
+
+      applyFlowState(
+        data.flow,
+        setVisitedNodeIds,
+        setVisitedQuestionNodeIds,
+        setTotalNodes,
+        setTotalQuestionNodes
+      );
+
+      if (data.mode === "completed") {
+        setOffers(data.result?.offers ?? []);
+        setNode(null);
+      } else {
+        setNode(data.currentNode ?? null);
+      }
+
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+      setErrorText("Не вдалося продовжити квіз.");
+    }
+  }
+
+  async function handleBack() {
+    if (!sessionId) return;
+
+    setIsLoading(true);
+    setErrorText(null);
+
+    try {
+      if (rewards.length > 0) {
+        setRewards((prev) =>
+          prev.map((reward, index) =>
+            index === prev.length - 1 ? { ...reward, popping: true } : reward
+          )
+        );
+      }
+
+      const response = await fetch(`http://localhost:3000/api/session/${sessionId}/back`, {
+        method: "POST"
+      });
+
+      const data: BackResponse = await response.json();
+
+      setTimeout(() => {
+        if (rewards.length > 0) {
+          setRewards((prev) => prev.slice(0, Math.max(prev.length - 1, 0)));
+        }
+
+        setNode(data.currentNode ?? null);
+        setSelectedValue(null);
+
+        applyFlowState(
+          data.flow,
+          setVisitedNodeIds,
+          setVisitedQuestionNodeIds,
+          setTotalNodes,
+          setTotalQuestionNodes
+        );
+
+        setIsLoading(false);
+      }, rewards.length > 0 ? 350 : 0);
+    } catch {
+      setIsLoading(false);
+      setErrorText("Не вдалося повернутися до попереднього питання.");
+    }
+  }
+
+  if (isLoading && !node && !offers) {
+    return <div style={{ padding: "50px", textAlign: "center", color: "#5C5452" }}>Завантаження...</div>;
+  }
+
+  if (errorText && !node && !offers) {
+    return <div style={{ padding: "50px", textAlign: "center", color: "#5C5452" }}>{errorText}</div>;
+  }
+
+  if (offers) {
+    const mainOffers = offers.filter((offer) => offer.category === "primary");
+    const offerToDisplay = mainOffers.length > 0 ? mainOffers[0] : offers[0];
+
+    return (
+      <div style={styles.container}>
+        <header style={styles.hero}>
+          <h1 style={styles.heroTitle}>Ваш план готовий</h1>
+          <p style={styles.heroText}>Ми підібрали найкраще рішення на основі ваших відповідей</p>
         </header>
 
-        <main style={contentStyle}>
-          <section style={dashboardStyle}>
-            <div style={dashboardTitleStyle}>Персональний дашборд</div>
+        {offerToDisplay ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div style={styles.card}>
+              <h2 style={{ ...styles.questionTitle, fontSize: "24px", marginBottom: "12px" }}>
+                {offerToDisplay.nameUk}
+              </h2>
+              <p
+                style={{
+                  color: "#5C5452",
+                  marginBottom: "28px",
+                  lineHeight: "1.6",
+                  fontSize: "15px"
+                }}
+              >
+                {offerToDisplay.descriptionUk}
+              </p>
+              <button style={{ ...styles.primaryButton, width: "100%" }}>
+                {offerToDisplay.ctaUk}
+              </button>
+            </div>
 
-            <div style={progressWrapStyle}>
-              <div style={progressMetaStyle}>
-                <span style={progressTextStyle}>Прогрес профілю</span>
-                <span style={progressTextStyle}>{progress}%</span>
-              </div>
-
-              <div style={progressTrackStyle}>
-                <div
+            {offers.filter((offer) => offer.id !== offerToDisplay.id).length > 0 && (
+              <div style={styles.card}>
+                <h3
                   style={{
-                    width: `${progress}%`,
-                    height: "100%",
-                    background: "linear-gradient(90deg, #D9C5A1 0%, #7A5C4D 100%)",
-                    borderRadius: "999px",
-                    transition: "width 240ms ease"
+                    color: "#4A3F3C",
+                    fontSize: "20px",
+                    marginTop: 0,
+                    marginBottom: "16px",
+                    fontFamily: "Georgia, serif"
                   }}
-                />
-              </div>
-            </div>
+                >
+                  Додаткові рекомендації
+                </h3>
 
-            <div style={{ height: 12 }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                  {offers
+                    .filter((offer) => offer.id !== offerToDisplay.id)
+                    .map((offer) => (
+                      <div
+                        key={offer.id}
+                        style={{
+                          border: "1px solid #EFE7E3",
+                          borderRadius: "18px",
+                          padding: "16px"
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontWeight: 700,
+                            color: "#4A3F3C",
+                            marginBottom: "8px"
+                          }}
+                        >
+                          {offer.nameUk}
+                        </div>
 
-            <div style={revealListStyle}>
-              {session?.dashboard.reveals.length ? (
-                session.dashboard.reveals.map((reveal) => (
-                  <div key={reveal.id} style={revealItemStyle}>
-                    <div style={revealLabelStyle}>{reveal.titleUk}</div>
-                    <div style={revealValueStyle}>{formatRevealValue(reveal.value)}</div>
-                  </div>
-                ))
-              ) : (
-                <div style={revealItemStyle}>
-                  <div style={revealLabelStyle}>Перший інсайт</div>
-                  <div style={revealValueStyle}>З’явиться після вашої відповіді</div>
+                        <div
+                          style={{
+                            color: "#5C5452",
+                            lineHeight: "1.5",
+                            fontSize: "14px"
+                          }}
+                        >
+                          {offer.descriptionUk}
+                        </div>
+                      </div>
+                    ))}
                 </div>
-              )}
-            </div>
-          </section>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div style={{ ...styles.card, textAlign: "center" }}>
+            <p style={{ color: "#5C5452", marginBottom: "20px" }}>
+              На жаль, ми не змогли підібрати план.
+            </p>
+            <button
+              style={{ ...styles.primaryButton, width: "100%" }}
+              onClick={() => window.location.reload()}
+            >
+              Почати заново
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
 
-          {praise && (
-            <section style={praiseStyle}>
-              <div style={praiseTitleStyle}>Мікроінсайт</div>
-              <div style={praiseTextStyle}>{praise}</div>
-            </section>
+  const isInfoNode = node?.type === "info";
+
+  return (
+    <div style={styles.container}>
+      {flyingImage && <img src={flyingImage} className="reward-fly-animation" alt="reward" />}
+
+      <header style={styles.hero}>
+        <h1 style={styles.heroTitle}>Твій шлях до балансу</h1>
+        <p style={styles.heroText}>Аналізуємо ваші відповіді для створення ідеальної програми</p>
+      </header>
+
+      <div style={styles.dashboard}>
+        <div style={styles.progressInfo}>
+          <span>{node?.ui?.progressLabelUk || "Ваш профіль"}</span>
+          <span>{Math.round(progress)}%</span>
+        </div>
+
+        <div style={styles.progressTrack}>
+          <div
+            style={{
+              width: `${progress}%`,
+              height: "100%",
+              background: "linear-gradient(90deg, #D6C4B8 0%, #B8C5D6 100%)",
+              transition: "width 0.8s cubic-bezier(0.16, 1, 0.3, 1)"
+            }}
+          />
+        </div>
+
+        <div className="rewards-bar">
+          {rewards.length === 0 && (
+            <span style={{ fontSize: "13px", color: "#9C8481" }}>
+              Ваші нагороди з'являться тут
+            </span>
+          )}
+          {rewards.map((reward, index) => (
+            <img
+              key={`${reward.id}-${index}`}
+              src={reward.image}
+              className={`reward-icon ${reward.popping ? "pop-out" : "pop-in"}`}
+              alt="reward"
+            />
+          ))}
+        </div>
+      </div>
+
+      <main style={styles.card}>
+        <div className="question-header">
+          <h2 style={styles.questionTitle}>{node?.titleUk}</h2>
+          {praise && <StarWithPopup text={praise} />}
+        </div>
+
+        {!!node?.subtitleUk && (
+          <p style={{ color: "#5C5452", lineHeight: "1.5", marginTop: "10px", marginBottom: "18px" }}>
+            {node.subtitleUk}
+          </p>
+        )}
+
+        {!isInfoNode && (
+          <div style={styles.optionsGrid}>
+            {node?.options?.map((option) => (
+              <button
+                key={option.id}
+                style={optionStyle(selectedValue === option.value)}
+                onClick={() => setSelectedValue(option.value)}
+              >
+                <span>{option.labelUk}</span>
+                {selectedValue === option.value && (
+                  <span style={{ fontWeight: "bold", color: "#4A3F3C" }}>✓</span>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {isInfoNode && (
+          <div
+            style={{
+              marginTop: "18px",
+              color: "#5C5452",
+              lineHeight: "1.6",
+              fontSize: "15px"
+            }}
+          >
+            {node?.descriptionUk || "Натисніть кнопку нижче, щоб продовжити."}
+          </div>
+        )}
+
+        {errorText && (
+          <div style={{ marginTop: "14px", color: "#A05A54", fontSize: "14px" }}>
+            {errorText}
+          </div>
+        )}
+
+        <div style={styles.navRow}>
+          {!isInfoNode ? (
+            <button
+              style={{
+                ...styles.primaryButton,
+                opacity: selectedValue === null || selectedValue === undefined || isLoading ? 0.5 : 1
+              }}
+              onClick={handleNext}
+              disabled={selectedValue === null || selectedValue === undefined || isLoading}
+            >
+              {isLoading ? "Обробка..." : node?.ui?.nextLabelUk || "Далі"}
+            </button>
+          ) : (
+            <button
+              style={{
+                ...styles.primaryButton,
+                opacity: isLoading ? 0.5 : 1
+              }}
+              onClick={handleContinueInfo}
+              disabled={isLoading}
+            >
+              {isLoading ? "Обробка..." : node?.ui?.nextLabelUk || "Далі"}
+            </button>
           )}
 
-          {result ? (
-            <section style={resultCardStyle}>
-              <div style={resultBadgeStyle}>Ваш результат готовий</div>
-              <div style={questionTitleStyle}>Персональна рекомендація сформована</div>
-              <div style={questionSubtitleStyle}>{result.explanationUk}</div>
-              <button type="button" style={primaryButtonStyle}>
-                {result.ctaUk}
-              </button>
-            </section>
-          ) : currentNode ? (
-            <section style={questionCardStyle}>
-              <div style={progressTextStyle}>
-                {currentNode.ui?.progressLabelUk ?? "Ваш крок"}
-              </div>
-
-              <div>
-                <div style={questionTitleStyle}>{currentNode.titleUk}</div>
-                {currentNode.subtitleUk && (
-                  <div style={{ ...questionSubtitleStyle, marginTop: 8 }}>{currentNode.subtitleUk}</div>
-                )}
-                {currentNode.descriptionUk && (
-                  <div style={{ ...questionSubtitleStyle, marginTop: 8 }}>{currentNode.descriptionUk}</div>
-                )}
-              </div>
-
-              {currentNode.type === "question" ? (
-                <>
-                  <div style={optionsGridStyle}>
-                    {currentNode.options.map((option) => {
-                      const selected = selectedValue === option.value;
-
-                      return (
-                        <button
-                          key={option.id}
-                          type="button"
-                          style={optionStyle(selected)}
-                          onClick={() => setSelectedValue(option.value)}
-                        >
-                          <span>{option.labelUk}</span>
-                          <span>{selected ? "●" : "○"}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div style={navRowStyle}>
-                    <button
-                      type="button"
-                      style={secondaryButtonStyle}
-                      onClick={handleBack}
-                      disabled={busy}
-                    >
-                      Назад
-                    </button>
-                    <button
-                      type="button"
-                      style={{
-                        ...primaryButtonStyle,
-                        opacity: selectedValue === null || busy ? 0.6 : 1
-                      }}
-                      onClick={handleSubmitQuestion}
-                      disabled={selectedValue === null || busy}
-                    >
-                      {busy ? "Завантаження..." : currentNode.ui?.nextLabelUk ?? "Далі"}
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <div style={navRowStyle}>
-                  <button
-                    type="button"
-                    style={secondaryButtonStyle}
-                    onClick={handleBack}
-                    disabled={busy}
-                  >
-                    Назад
-                  </button>
-                  <button
-                    type="button"
-                    style={primaryButtonStyle}
-                    onClick={handleContinueInfo}
-                    disabled={busy}
-                  >
-                    {busy ? "Завантаження..." : currentNode.ui?.nextLabelUk ?? "Продовжити"}
-                  </button>
-                </div>
-              )}
-            </section>
-          ) : null}
-        </main>
-      </div>
+          <button
+            style={{
+              ...styles.secondaryButton,
+              opacity: visitedNodeIds.length <= 1 || isLoading ? 0.5 : 1,
+              pointerEvents: visitedNodeIds.length <= 1 || isLoading ? "none" : "auto"
+            }}
+            onClick={handleBack}
+          >
+            Назад
+          </button>
+        </div>
+      </main>
     </div>
   );
 }

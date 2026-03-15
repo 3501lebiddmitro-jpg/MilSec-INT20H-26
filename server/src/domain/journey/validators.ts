@@ -200,10 +200,7 @@ function validateQuestionOutgoingEdges(config: JourneyConfig): ValidationIssue[]
     const outgoingCount = (adjacency.get(node.id) ?? []).length;
 
     if (outgoingCount === 0) {
-      issues.push({
-        code: "question_without_outgoing_edges",
-        messageUk: `Питання ${node.id} не має жодного переходу далі.`
-      });
+      continue;
     }
   }
 
@@ -228,7 +225,7 @@ function validateOptionBindings(config: JourneyConfig): ValidationIssue[] {
     if (node.type !== "question") {
       issues.push({
         code: "option_attached_to_non_question",
-        messageUk: `Option ${option.id} прив'язаний до не-question node ${option.nodeId}.`
+        messageUk: `Option ${option.id} прив'язаний до non-question node ${option.nodeId}.`
       });
     }
   }

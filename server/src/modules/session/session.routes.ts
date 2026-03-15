@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { z } from "zod";
 import {
+  continueInfo,
   getSession,
   goBack,
   replaceAnswer,
@@ -65,6 +66,17 @@ sessionRouter.post("/:sessionId/answer", (req, res) => {
   } catch (error) {
     res.status(400).json({
       message: error instanceof Error ? error.message : "Не вдалося зберегти відповідь."
+    });
+  }
+});
+
+sessionRouter.post("/:sessionId/continue", (req, res) => {
+  try {
+    const result = continueInfo(req.params.sessionId);
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({
+      message: error instanceof Error ? error.message : "Не вдалося продовжити квіз."
     });
   }
 });

@@ -29,7 +29,7 @@ export type AnswersMap = Record<string, AnswerValue>;
 
 export type DerivedMap = Record<string, PrimitiveValue | PrimitiveValue[]>;
 
-export type OfferCategory = "primary" | "addon";
+export type OfferCategory = "primary" | "addon" | "cross-sell";
 
 export type Journey = {
   id: string;
@@ -86,6 +86,9 @@ export type Option = {
   value: PrimitiveValue;
   order: number;
   conditions?: Condition[];
+  meta?: {
+    reward?: string;
+  };
 };
 
 export type Edge = {
@@ -107,11 +110,17 @@ export type Offer = {
   ctaUk: string;
 };
 
-export type OfferResult = {
-  primaryOfferId: string;
-  secondaryOfferIds: string[];
-  explanationUk: string;
+export type OfferCard = {
+  id: string;
+  code: string;
+  nameUk: string;
+  descriptionUk: string;
   ctaUk: string;
+};
+
+export type OfferResult = {
+  offers: Offer[];
+  matchedRules: string[];
 };
 
 export type JourneyConfig = {
@@ -127,6 +136,9 @@ export type RenderableOption = {
   labelUk: string;
   value: PrimitiveValue;
   order: number;
+  meta?: {
+    reward?: string;
+  };
 };
 
 export type QuestionNodePayload = {

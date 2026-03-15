@@ -1,0 +1,61 @@
+{
+  "nodes": [
+    { "id": "node_gender", "position": { "x": 400, "y": 0 }, "data": { "label": "1. Вкажіть стать", "kind": "question" } },
+    { "id": "node_age", "position": { "x": 400, "y": 120 }, "data": { "label": "2. Ваш вік", "kind": "question" } },
+    { "id": "node_goal", "position": { "x": 400, "y": 240 }, "data": { "label": "3. Головна ціль", "kind": "question" } },
+
+    { "id": "node_wl_blocker", "position": { "x": -150, "y": 400 }, "data": { "label": "Схуднення: Перешкоди", "kind": "question" } },
+    { "id": "node_wl_diet_type", "position": { "x": -300, "y": 520 }, "data": { "label": "Проблема: Дієта", "kind": "question" } },
+    { "id": "node_wl_lifestyle", "position": { "x": 0, "y": 520 }, "data": { "label": "Проблема: Час/Мотивація", "kind": "question" } },
+    { "id": "node_wl_metabolism", "position": { "x": -150, "y": 650 }, "data": { "label": "Аналіз метаболізму", "kind": "question" } },
+
+    { "id": "node_str_exp", "position": { "x": 250, "y": 400 }, "data": { "label": "Сила: Досвід", "kind": "question" } },
+    { "id": "node_str_fear", "position": { "x": 150, "y": 520 }, "data": { "label": "Новачок: Страхи", "kind": "question" } },
+    { "id": "node_str_plateau", "position": { "x": 350, "y": 520 }, "data": { "label": "Профі: Плато", "kind": "question" } },
+
+    { "id": "node_flx_pain", "position": { "x": 550, "y": 400 }, "data": { "label": "Гнучкість: Біль", "kind": "question" } },
+    { "id": "node_run_level", "position": { "x": 800, "y": 400 }, "data": { "label": "Біг: Дистанція", "kind": "question" } },
+    { "id": "node_mnt_symptom", "position": { "x": 1050, "y": 400 }, "data": { "label": "Стрес: Симптоми", "kind": "question" } },
+
+    { "id": "node_context", "position": { "x": 400, "y": 800 }, "data": { "label": "Контекст (Дім чи Зал?)", "kind": "question" } },
+    { "id": "node_stress_level", "position": { "x": 400, "y": 950 }, "data": { "label": "Фінальний рівень стресу", "kind": "question" } },
+
+    { "id": "offer_1", "position": { "x": -100, "y": 1150 }, "data": { "label": "Weight Loss Home", "kind": "offer" } },
+    { "id": "offer_2", "position": { "x": 200, "y": 1150 }, "data": { "label": "Lean Strength Gym", "kind": "offer" } },
+    { "id": "offer_6", "position": { "x": 500, "y": 1150 }, "data": { "label": "Stress Reset", "kind": "offer" } },
+    { "id": "offer_4", "position": { "x": 800, "y": 1150 }, "data": { "label": "Run 5K", "kind": "offer" } }
+  ],
+  "edges": [
+    { "id": "e1", "source": "node_gender", "target": "node_age" },
+    { "id": "e2", "source": "node_age", "target": "node_goal" },
+    
+    { "id": "e3", "source": "node_goal", "target": "node_wl_blocker", "label": "Схуднення" },
+    { "id": "e4", "source": "node_goal", "target": "node_str_exp", "label": "Сила" },
+    { "id": "e5", "source": "node_goal", "target": "node_flx_pain", "label": "Гнучкість" },
+    { "id": "e6", "source": "node_goal", "target": "node_run_level", "label": "Біг" },
+    { "id": "e7", "source": "node_goal", "target": "node_mnt_symptom", "label": "Антистрес" },
+
+    { "id": "e8", "source": "node_wl_blocker", "target": "node_wl_diet_type", "label": "Дієта" },
+    { "id": "e9", "source": "node_wl_blocker", "target": "node_wl_lifestyle", "label": "Час" },
+    { "id": "e10", "source": "node_wl_diet_type", "target": "node_wl_metabolism" },
+    { "id": "e11", "source": "node_wl_lifestyle", "target": "node_wl_metabolism" },
+    { "id": "e12", "source": "node_wl_metabolism", "target": "node_context" },
+
+    { "id": "e13", "source": "node_str_exp", "target": "node_str_fear", "label": "Новачок" },
+    { "id": "e14", "source": "node_str_exp", "target": "node_str_plateau", "label": "Профі" },
+    { "id": "e15", "source": "node_str_fear", "target": "node_context" },
+    { "id": "e16", "source": "node_str_plateau", "target": "node_context" },
+
+    { "id": "e17", "source": "node_flx_pain", "target": "node_context" },
+    { "id": "e18", "source": "node_run_level", "target": "node_context" },
+    { "id": "e19", "source": "node_mnt_symptom", "target": "node_context" },
+
+    { "id": "e20", "source": "node_context", "target": "node_stress_level" },
+
+    { "id": "o1", "source": "node_stress_level", "target": "offer_1", "label": "Схуднення + Дім" },
+    { "id": "o2", "source": "node_stress_level", "target": "offer_2", "label": "Сила + Зал" },
+    { "id": "o6", "source": "node_stress_level", "target": "offer_6", "label": "Високий стрес" },
+    { "id": "o4", "source": "node_stress_level", "target": "offer_4", "label": "Біг" }
+  ],
+  "counter": 20
+}

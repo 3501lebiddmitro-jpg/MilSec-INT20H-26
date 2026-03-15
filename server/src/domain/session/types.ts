@@ -1,4 +1,11 @@
-import type { AnswerValue, AnswersMap, DerivedMap, NodePayload, OfferResult, PrimitiveValue } from "../journey/types.js";
+import type {
+  AnswerValue,
+  AnswersMap,
+  DerivedMap,
+  NodePayload,
+  OfferResult,
+  PrimitiveValue
+} from "../journey/types.js";
 
 export type SessionStatus = "active" | "completed" | "abandoned";
 

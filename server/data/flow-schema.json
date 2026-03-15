@@ -1,0 +1,1408 @@
+{
+  "nodes": [
+    {
+      "id": "node_gender",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "Вкажіть вашу стать",
+        "kind": "question",
+        "subtitle": "",
+        "key": "gender",
+        "options": [
+          {
+            "label": "Чоловік",
+            "value": "⚡",
+            "reward": "/rewards/men.png"
+          },
+          {
+            "label": "Жінка",
+            "value": "female",
+            "reward": "/rewards/women.png"
+          },
+          {
+            "label": "Небінарна особа",
+            "value": "non_binary",
+            "reward": ""
+          },
+          {
+            "label": "Волію не вказувати",
+            "value": "prefer_not_to_say",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 48
+      },
+      "selected": true
+    },
+    {
+      "id": "node_age",
+      "position": {
+        "x": 0,
+        "y": 160
+      },
+      "data": {
+        "label": "Ваш вік",
+        "kind": "question",
+        "subtitle": "",
+        "key": "age",
+        "options": [
+          {
+            "label": "До 20",
+            "value": "under_20",
+            "reward": ""
+          },
+          {
+            "label": "21-29",
+            "value": "21_29",
+            "reward": ""
+          },
+          {
+            "label": "30-39",
+            "value": "30_39",
+            "reward": ""
+          },
+          {
+            "label": "40-49",
+            "value": "40_49",
+            "reward": ""
+          },
+          {
+            "label": "50+",
+            "value": "50_plus",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 48
+      }
+    },
+    {
+      "id": "node_goal",
+      "position": {
+        "x": 0,
+        "y": 320
+      },
+      "data": {
+        "label": "Яка ваша головна ціль?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "goal",
+        "options": [
+          {
+            "label": "Схуднення та спалювання жиру",
+            "value": "weight_loss",
+            "reward": ""
+          },
+          {
+            "label": "Набір маси, сила та рельєф",
+            "value": "strength",
+            "reward": "/rewards/body.png"
+          },
+          {
+            "label": "Здорова спина, гнучкість, без болю",
+            "value": "flexibility",
+            "reward": "/rewards/gimn.png"
+          },
+          {
+            "label": "Витривалість та біг",
+            "value": "endurance",
+            "reward": "/rewards/run.png"
+          },
+          {
+            "label": "Ментальний детокс та антистрес",
+            "value": "stress_relief",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 48
+      }
+    },
+    {
+      "id": "node_wl_blocker",
+      "position": {
+        "x": 0,
+        "y": 480
+      },
+      "data": {
+        "label": "Що найбільше заважало вам схуднути раніше?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "wl_blocker",
+        "options": [
+          {
+            "label": "Постійні зриви в харчуванні / тяга до солодкого",
+            "value": "diet",
+            "reward": ""
+          },
+          {
+            "label": "Брак часу та сил після роботи",
+            "value": "time",
+            "reward": ""
+          },
+          {
+            "label": "Швидко втрачаю мотивацію, кидаю на півшляху",
+            "value": "motivation",
+            "reward": ""
+          },
+          {
+            "label": "Гормональні зміни / Повільний метаболізм",
+            "value": "medical",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_wl_diet_type",
+      "position": {
+        "x": 0,
+        "y": 640
+      },
+      "data": {
+        "label": "Як саме проявляються проблеми з харчуванням?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "wl_diet_type",
+        "options": [
+          {
+            "label": "Їм солодощі щодня, не можу зупинитись",
+            "value": "sugar",
+            "reward": ""
+          },
+          {
+            "label": "Заїдаю стрес та емоції великими порціями",
+            "value": "stress_eat",
+            "reward": ""
+          },
+          {
+            "label": "Вдень не їм, а ввечері спустошую холодильник",
+            "value": "night_eat",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_wl_lifestyle",
+      "position": {
+        "x": 0,
+        "y": 800
+      },
+      "data": {
+        "label": "Який ваш рівень щоденної побутової активності?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "wl_lifestyle",
+        "options": [
+          {
+            "label": "Виключно сидяча робота (менше 3 тис. кроків)",
+            "value": "sedentary",
+            "reward": ""
+          },
+          {
+            "label": "Помірна (намагаюсь гуляти, 5-7 тис. кроків)",
+            "value": "moderate",
+            "reward": ""
+          },
+          {
+            "label": "Весь день на ногах",
+            "value": "active",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_wl_metabolism",
+      "position": {
+        "x": 300,
+        "y": 0
+      },
+      "data": {
+        "label": "Як швидко ви зазвичай набираєте вагу?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "wl_metabolism",
+        "options": [
+          {
+            "label": "Дуже швидко, варто лише подивитись на торт",
+            "value": "fast_gain",
+            "reward": ""
+          },
+          {
+            "label": "Поступово, з віком стало складніше тримати вагу",
+            "value": "age_gain",
+            "reward": ""
+          },
+          {
+            "label": "Вага скаче як гойдалка туди-сюди",
+            "value": "yo_yo",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_str_exp",
+      "position": {
+        "x": 300,
+        "y": 160
+      },
+      "data": {
+        "label": "Який ваш реальний досвід тренувань?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "str_exp",
+        "options": [
+          {
+            "label": "Абсолютний новачок (0-3 місяці)",
+            "value": "novice",
+            "reward": ""
+          },
+          {
+            "label": "Займався(лась) раніше, але була велика пауза",
+            "value": "returning",
+            "reward": ""
+          },
+          {
+            "label": "Впевнений користувач (понад 1 рік стабільно)",
+            "value": "pro",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_str_fear",
+      "position": {
+        "x": 300,
+        "y": 320
+      },
+      "data": {
+        "label": "Що викликає найбільший дискомфорт на старті?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "str_fear",
+        "options": [
+          {
+            "label": "Боюсь травмуватися через неправильну техніку",
+            "value": "injury",
+            "reward": ""
+          },
+          {
+            "label": "Сором'язливість серед 'качків' у залі",
+            "value": "social",
+            "reward": ""
+          },
+          {
+            "label": "Не знаю з чого почати, потрібен чіткий план",
+            "value": "plan",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_str_plateau",
+      "position": {
+        "x": 300,
+        "y": 480
+      },
+      "data": {
+        "label": "У чому ви зараз відчуваєте застій (плато)?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "str_plateau",
+        "options": [
+          {
+            "label": "Вага на штанзі не росте вже місяцями",
+            "value": "weights",
+            "reward": ""
+          },
+          {
+            "label": "М'язи не збільшуються візуально",
+            "value": "hypertrophy",
+            "reward": ""
+          },
+          {
+            "label": "Брак енергії на важкі тренування",
+            "value": "energy",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_flx_pain",
+      "position": {
+        "x": 300,
+        "y": 640
+      },
+      "data": {
+        "label": "В якій зоні ви відчуваєте скутість або біль?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "flx_pain",
+        "options": [
+          {
+            "label": "Поперек (нижня частина спини)",
+            "value": "lower_back",
+            "reward": ""
+          },
+          {
+            "label": "Шия та плечі (синдром комп'ютерної шиї)",
+            "value": "neck",
+            "reward": ""
+          },
+          {
+            "label": "Коліна та тазостегнові суглоби",
+            "value": "legs",
+            "reward": ""
+          },
+          {
+            "label": "Просто хочу сісти на шпагат / стати гнучкішим",
+            "value": "general",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_flx_desk",
+      "position": {
+        "x": 300,
+        "y": 800
+      },
+      "data": {
+        "label": "Скільки годин на день ви проводите за комп'ютером?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "flx_desk",
+        "options": [
+          {
+            "label": "Понад 8 годин (офіс/IT)",
+            "value": "heavy",
+            "reward": ""
+          },
+          {
+            "label": "4-7 годин",
+            "value": "medium",
+            "reward": ""
+          },
+          {
+            "label": "Майже не сиджу",
+            "value": "low",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_flx_joints",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "data": {
+        "label": "Чи були у вас раніше травми колін або гомілкостопів?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "flx_joints",
+        "options": [
+          {
+            "label": "Так, були операції або серйозні травми",
+            "value": "surgery",
+            "reward": ""
+          },
+          {
+            "label": "Іноді ниють на погоду або після навантажень",
+            "value": "dull_pain",
+            "reward": ""
+          },
+          {
+            "label": "Ні, суглоби здорові",
+            "value": "healthy",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_run_level",
+      "position": {
+        "x": 600,
+        "y": 160
+      },
+      "data": {
+        "label": "Яку дистанцію ви можете пробігти зараз без зупинки?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "run_level",
+        "options": [
+          {
+            "label": "0 км (задихаюсь на перших хвилинах)",
+            "value": "zero",
+            "reward": ""
+          },
+          {
+            "label": "1-3 км (бігаю іноді)",
+            "value": "beginner",
+            "reward": ""
+          },
+          {
+            "label": "Понад 5 км стабільно",
+            "value": "advanced",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_run_breath",
+      "position": {
+        "x": 600,
+        "y": 320
+      },
+      "data": {
+        "label": "Чи буває у вас сильна задишка на сходах?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "run_breath",
+        "options": [
+          {
+            "label": "Так, серце вистрибує дуже швидко",
+            "value": "bad",
+            "reward": ""
+          },
+          {
+            "label": "Легка задишка, але швидко відновлююсь",
+            "value": "ok",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_mnt_symptom",
+      "position": {
+        "x": 600,
+        "y": 480
+      },
+      "data": {
+        "label": "Як саме стрес впливає на ваше тіло?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "mnt_symptom",
+        "options": [
+          {
+            "label": "Постійна тривога і нав'язливі думки",
+            "value": "anxiety",
+            "reward": ""
+          },
+          {
+            "label": "Фізичні затиски (стиснуті щелепи, спазм у животі)",
+            "value": "physical",
+            "reward": ""
+          },
+          {
+            "label": "Апатія, немає сил ні на що",
+            "value": "apathy",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_mnt_sleep",
+      "position": {
+        "x": 600,
+        "y": 640
+      },
+      "data": {
+        "label": "Що заважає вам якісно висипатися?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "mnt_sleep",
+        "options": [
+          {
+            "label": "Довго кручусь, не можу заснути",
+            "value": "falling",
+            "reward": ""
+          },
+          {
+            "label": "Прокидаюсь посеред ночі від тривоги",
+            "value": "waking",
+            "reward": ""
+          },
+          {
+            "label": "Сплю 8 годин, але встаю розбитим",
+            "value": "quality",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_context",
+      "position": {
+        "x": 600,
+        "y": 800
+      },
+      "data": {
+        "label": "Де вам найкомфортніше займатися?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "context",
+        "options": [
+          {
+            "label": "Вдома (максимум приватності)",
+            "value": "home",
+            "reward": "/rewards/home.png"
+          },
+          {
+            "label": "У тренажерному залі (робоча атмосфера)",
+            "value": "gym",
+            "reward": "/rewards/gym.ong"
+          },
+          {
+            "label": "На вулиці (свіже повітря)",
+            "value": "outdoor",
+            "reward": "/rewards/street.png"
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_home_equip",
+      "position": {
+        "x": 900,
+        "y": 0
+      },
+      "data": {
+        "label": "Чи є у вас якийсь інвентар вдома?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "home_equip",
+        "options": [
+          {
+            "label": "Абсолютно нічого, тільки килимок",
+            "value": "none",
+            "reward": ""
+          },
+          {
+            "label": "Фітнес-резинки (еспандери)",
+            "value": "bands",
+            "reward": ""
+          },
+          {
+            "label": "Гантелі / Гирі",
+            "value": "weights",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_gym_time",
+      "position": {
+        "x": 900,
+        "y": 160
+      },
+      "data": {
+        "label": "Скільки часу ви можете приділити одному тренуванню?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "gym_time",
+        "options": [
+          {
+            "label": "Експрес: 30-40 хвилин",
+            "value": "short",
+            "reward": ""
+          },
+          {
+            "label": "Повноцінно: 60-90 хвилин",
+            "value": "long",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_outdoor_weather",
+      "position": {
+        "x": 900,
+        "y": 320
+      },
+      "data": {
+        "label": "Чи готові ви займатися на вулиці в прохолодну погоду?",
+        "kind": "question",
+        "subtitle": "",
+        "key": "outdoor_weather",
+        "options": [
+          {
+            "label": "Так, мене не зупинить навіть дощ",
+            "value": "hardcore",
+            "reward": ""
+          },
+          {
+            "label": "Ні, за поганої погоди зроблю заміну вдома",
+            "value": "flexible",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 64
+      }
+    },
+    {
+      "id": "node_stress_level",
+      "position": {
+        "x": 900,
+        "y": 480
+      },
+      "data": {
+        "label": "Останнє питання: ваш загальний рівень стресу останнім часом?",
+        "kind": "question",
+        "subtitle": "Стрес напряму блокує результати. Ми врахуємо це в плані.",
+        "key": "stress_level",
+        "options": [
+          {
+            "label": "Спокійний(а), все під контролем",
+            "value": "low",
+            "reward": ""
+          },
+          {
+            "label": "Періодично штормить, але тримаюсь",
+            "value": "medium",
+            "reward": ""
+          },
+          {
+            "label": "Я на межі вигорання",
+            "value": "high",
+            "reward": ""
+          }
+        ]
+      },
+      "style": {
+        "width": 240,
+        "borderRadius": 16,
+        "padding": 14,
+        "fontSize": 14,
+        "fontWeight": 500,
+        "boxShadow": "0 8px 24px rgba(74, 63, 60, 0.08)",
+        "border": "2px solid #D6C4B8",
+        "background": "#FFFFFF",
+        "color": "#5C5452"
+      },
+      "measured": {
+        "width": 240,
+        "height": 80
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_0",
+      "source": "node_gender",
+      "target": "node_age",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_1",
+      "source": "node_age",
+      "target": "node_goal",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_2",
+      "source": "node_goal",
+      "target": "node_wl_blocker",
+      "label": "goal = weight_loss",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_3",
+      "source": "node_wl_blocker",
+      "target": "node_wl_diet_type",
+      "label": "wl_blocker = diet",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_4",
+      "source": "node_wl_blocker",
+      "target": "node_wl_lifestyle",
+      "label": "wl_blocker = time,motivation,medical",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_5",
+      "source": "node_wl_diet_type",
+      "target": "node_wl_metabolism",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_6",
+      "source": "node_wl_lifestyle",
+      "target": "node_wl_metabolism",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_7",
+      "source": "node_wl_metabolism",
+      "target": "node_context",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_8",
+      "source": "node_goal",
+      "target": "node_str_exp",
+      "label": "goal = strength",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_9",
+      "source": "node_str_exp",
+      "target": "node_str_fear",
+      "label": "str_exp = novice,returning",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_10",
+      "source": "node_str_exp",
+      "target": "node_str_plateau",
+      "label": "str_exp = pro",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_11",
+      "source": "node_str_fear",
+      "target": "node_context",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_12",
+      "source": "node_str_plateau",
+      "target": "node_context",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_13",
+      "source": "node_goal",
+      "target": "node_flx_pain",
+      "label": "goal = flexibility",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_14",
+      "source": "node_flx_pain",
+      "target": "node_flx_desk",
+      "label": "flx_pain = lower_back,neck,general",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_15",
+      "source": "node_flx_pain",
+      "target": "node_flx_joints",
+      "label": "flx_pain = legs",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_16",
+      "source": "node_flx_desk",
+      "target": "node_context",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_17",
+      "source": "node_flx_joints",
+      "target": "node_context",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_18",
+      "source": "node_goal",
+      "target": "node_run_level",
+      "label": "goal = endurance",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_19",
+      "source": "node_run_level",
+      "target": "node_run_breath",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_20",
+      "source": "node_run_breath",
+      "target": "node_context",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_21",
+      "source": "node_goal",
+      "target": "node_mnt_symptom",
+      "label": "goal = stress_relief",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_22",
+      "source": "node_mnt_symptom",
+      "target": "node_mnt_sleep",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_23",
+      "source": "node_mnt_sleep",
+      "target": "node_context",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_24",
+      "source": "node_context",
+      "target": "node_home_equip",
+      "label": "context = home",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_25",
+      "source": "node_context",
+      "target": "node_gym_time",
+      "label": "context = gym",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_26",
+      "source": "node_context",
+      "target": "node_outdoor_weather",
+      "label": "context = outdoor",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_27",
+      "source": "node_home_equip",
+      "target": "node_stress_level",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_28",
+      "source": "node_gym_time",
+      "target": "node_stress_level",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "e_29",
+      "source": "node_outdoor_weather",
+      "target": "node_stress_level",
+      "label": "",
+      "markerEnd": {
+        "type": "arrowclosed"
+      },
+      "style": {
+        "stroke": "#9C8481",
+        "strokeWidth": 2
+      }
+    }
+  ],
+  "counter": 300
+}
